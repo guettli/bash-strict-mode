@@ -136,6 +136,22 @@ Above code works in strict mode, because there is a match. But it fails, if ther
 In that case I expect that `comments.txt` is an empty file, and the script should not fail, but
 continue to the next line.
 
+This code fails in strict mode:
+
+```bash
+echo -e "foo\nbar" | grep '^#' >comments.txt
+```
+
+Work-around:
+
+```bash
+echo -e "foo\nbar" | { grep '^#' >comments.txt || true; }
+```
+
+With this pattern you can easily ignore non-zero exit statues.
+
+
+
 
 
 
