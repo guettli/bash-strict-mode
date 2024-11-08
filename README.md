@@ -185,9 +185,16 @@ There is [ShellCheck](https://github.com/koalaman/shellcheck) and a [VS Code plu
 ShellCheck can recognize several types of incorrect quoting. It warns you about every unquoted variable. Since it is not much work, I follow ShellCheck's recommendations.
 
 
-## Fish Shell
+## Interactive Shell
 
-BTW, I use the Fish Shell for interactive usage on the terminal, and for scripts I use Bash.
+This article is about Bash scripting.
+
+For interative usage on the terminal I use:
+
+* [Fish Shell](https://fishshell.com/)
+* [Starship](https://starship.rs/) for the prompt.
+* [Atuin](https://github.com/atuinsh/atuin) for the shell history.
+* [direnv](https://direnv.net/) to set directoy specific env variables.
 
 ## /r/bash
 
