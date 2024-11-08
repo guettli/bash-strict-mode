@@ -150,11 +150,28 @@ echo -e "foo\nbar" | { grep '^#' >comments.txt || true; }
 
 With this pattern you can easily ignore non-zero exit statues.
 
+## Bash Strict Mode: Conclusion
 
+My conclusion: Use strict mode!
 
+## General Bash Hints: Use sub scripts instead of functions
 
+I don't like writing functions in Bash scripts, because functions return a plain string.
 
+You can't easily distinguish between an sucessful function call and a call which failed.
 
+That's why I prefer to write a small second/third script (with strict mode), and call that.
+
+If I want to distinguish between a sucessful function call and a call which failed,
+I can do that easily like this: 
+
+```bash
+if ./my-small-script.sh; then
+    echo "Success"
+else
+    echo "Failure"
+fi
+```
 
 # Misc
 
