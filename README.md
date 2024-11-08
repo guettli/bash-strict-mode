@@ -22,7 +22,7 @@ Let's have a closer look:
 
 ```bash
 #!/bin/bash
-```
+```  
 
 This makes sure we use the Bash shell, and not a different shell. Writing portable shell scripts is way more complicated, and I want to get things done, so I use the Bash and its handy features.
 
@@ -104,7 +104,39 @@ I disagree. The strict mode has consequences, and dealing with these consequence
 more typing. But typing is not the bottle-neck. I prefer to type a bit more, if that
 results in more reliable Bash scripts.
 
-## Bash Strict Mode: Use it blindly?
+## Bash Strict Mode: Handle unset variables
+
+This line would fail in strict mode, if VAR is not set:
+
+```bash
+echo "${VAR?Variable is not set or is empty}"
+```
+
+You can work-around that easily by setting a default value:
+
+```bash
+VAR="${VAR:-default_value}"
+echo "${VAR?Variable is not set or is empty}"
+```
+
+## Bash Strict Mode: Handle non-zero exit codes
+
+Non-zero exit codes often indicate an error, but not always.
+
+The command `grep` returns `0` if a line matched, otherwise `1`.
+
+For example, you want to filter comments into a file:
+
+```bash
+echo -e "foo\n#comment\nbar" | grep '^#' >comments.txt
+```
+
+Above code works in strict mode, because there is a match. But it fails, if there is not comment.
+
+In that case I expect that `comments.txt` is an empty file, and the script should not fail, but
+continue to the next line.
+
+
 
 
 
