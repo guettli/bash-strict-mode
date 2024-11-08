@@ -189,3 +189,7 @@ ShellCheck can recognize several types of incorrect quoting. It warns you about 
 Thank you to [https://www.reddit.com/r/bash/](https://www.reddit.com/r/bash/)
 
 I got several good hints there.
+
+# More
+
+* [Thomas WOL: Working out Loud](https://github.com/guettli/wol)
