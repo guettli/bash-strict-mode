@@ -67,7 +67,7 @@ Imagine you have simple script:
 
 ```bash
 grep foo bar.txt >out.txt
-echo "Done"
+echo "all is fine"
 ```
 
 The script expects that there is a file called `bar.txt`. But what happens if that file does not exist?
@@ -77,7 +77,7 @@ If the file does not exist, you get this output (without strict mode):
 ```terminal
 ❯ ~/tmp/t.sh
 grep: bar.txt: No such file or directory
-Done
+all is fine
 ```
 The script terminates with a zero (means "OK") exit status, although there was something wrong.
 
@@ -173,15 +173,22 @@ else
 fi
 ```
 
-# Misc
+# Misc: Shell vs Bash
 
-shell vs bash scripting.
+I think writing portable shell scripts is useless in most cases. It is like trying to write a script which works in the Python and Ruby interpreter at the same time.
 
+
+# Misc: /r/bash
 
 Thank you to https://www.reddit.com/r/bash/
 
+I got several good hints there.
 
-https://github.com/mvdan/sh#shfmt and vscode plugin https://marketplace.visualstudio.com/items?itemName=foxundermoon.shell-format
+# shfmt
+
+There is a handy shell formatter: [shfmt](https://github.com/mvdan/sh#shfmt) and [vscode plugin shell-format](https://marketplace.visualstudio.com/items?itemName=foxundermoon.shell-format)
+
+
 
 
 Add comment to that comment: https://www.reddit.com/r/commandline/comments/g1vsxk/comment/fniifmk/
