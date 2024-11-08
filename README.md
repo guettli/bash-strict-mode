@@ -173,23 +173,23 @@ else
 fi
 ```
 
-# Misc: Shell vs Bash
+## Misc: Shell vs Bash
 
 I think writing portable shell scripts is useless in most cases. It is like trying to write a script which works in the Python and Ruby interpreter at the same time.
 
+## shfmt
 
-# Misc: /r/bash
+There is a handy shell formatter: [shfmt](https://github.com/mvdan/sh#shfmt) and [vscode plugin shell-format](https://marketplace.visualstudio.com/items?itemName=foxundermoon.shell-format)
+
+## ShellCheck
+
+There is [ShellCheck](https://github.com/koalaman/shellcheck) and [vscode plugin shell-check](https://marketplace.visualstudio.com/items?itemName=timonwong.shellcheck) which helps you to find 
+errors in your script.
+
+ShellCheck can recognize several types of incorrect quoting. It warns you about every unquoted variable. Since it is not much work, I follow the recommendations of ShellCheck.
+
+## /r/bash
 
 Thank you to https://www.reddit.com/r/bash/
 
 I got several good hints there.
-
-# shfmt
-
-There is a handy shell formatter: [shfmt](https://github.com/mvdan/sh#shfmt) and [vscode plugin shell-format](https://marketplace.visualstudio.com/items?itemName=foxundermoon.shell-format)
-
-
-
-
-Add comment to that comment: https://www.reddit.com/r/commandline/comments/g1vsxk/comment/fniifmk/
-
