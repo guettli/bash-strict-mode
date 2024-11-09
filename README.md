@@ -6,6 +6,14 @@ In this text, I explain how I use the Bash shell. Of course, there are several o
 
 If you think there is something wrong or could be improved, please create an issue in this GitHub project. Thank you!
 
+This text contains to parts: Bash Strict Mode and General Hints and Opinions
+
+## Part 1: Bash Strict Mode
+
+Bash strict mode refers to a set of options and practices used in Bash scripting to make scripts
+more robust, reliable, and easier to debug. By enabling strict mode, you can prevent common scripting errors,
+detect issues early, and make your scripts fail in a controlled way when something unexpected happens.
+
 ## Bash Strict Mode: Activating it
 
 I use this at the top of my Bash scripts:
@@ -150,6 +158,8 @@ With this pattern, you can easily ignore non-zero exit statuses.
 
 My conclusion: Use strict mode!
 
+## Part 2: General Hints and Opinions
+
 ## General Bash Hints: Use sub-scripts instead of functions
 
 I don't like writing functions in Bash scripts because functions return a plain string.
@@ -170,6 +180,30 @@ else
 fi
 ```
 
+## Makefiles
+
+Makefiles are similar to the strict mode. Let's look at an example:
+
+```makefile
+target: prerequisites
+    command-1
+    command-2
+    command-3
+```
+
+If `command-1` fails the Makefile stops, and does not execute `command-2`.
+
+The syntax in a Makefile looks like shell, but it is not.
+
+As soon as the commands in a Makefile get complicated, I recommend to keep it simple:
+
+```makefile
+target: prerequisites
+    ./bash-script-written-in-strict-mode.sh
+```
+
+Instead of trying to understand the syntax of Makefile (for example `$(shell ...)`), I recommend to call a Bash script.
+
 ## Misc: Shell vs Bash
 
 I think writing portable shell scripts is unnecessary in most cases. It is like trying to write a script that works in both Python and Ruby interpreters at the same time.
@@ -183,7 +217,6 @@ There is a handy shell formatter: [shfmt](https://github.com/mvdan/sh#shfmt) and
 There is [ShellCheck](https://github.com/koalaman/shellcheck) and a [VS Code plugin for ShellCheck](https://marketplace.visualstudio.com/items?itemName=timonwong.shellcheck) which helps you find errors in your script.
 
 ShellCheck can recognize several types of incorrect quoting. It warns you about every unquoted variable. Since it is not much work, I follow ShellCheck's recommendations.
-
 
 ## Interactive Shell
 
