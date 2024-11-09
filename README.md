@@ -236,11 +236,21 @@ There is [ShellCheck](https://github.com/koalaman/shellcheck) and a [VS Code plu
 
 ShellCheck can recognize several types of incorrect quoting. It warns you about every unquoted variable. Since it is not much work, I follow ShellCheck's recommendations.
 
+## Provisioning a machine: Fancy Tools or boring Bash?
+
+There are several well known tools for provisioning a machine: Ansible, SaltStack, Puppet, Chef, ...
+
+All of them have their learning costs.
+
+It depends on the environment, but maybe a Bash script in strict mode is easier to maintain.
+
+Some years ago, we used SaltStack to provision and update a lot of virtual machines. We wasted so much time because things did not work as expected, or error messages got swallowed. In hindsight, we would have been much faster if we had taken the pragmatic approach (Bash) instead of being proud to use the same tools as big tech companies.
+
 ## Interactive Shell
 
 This article is about Bash scripting.
 
-For interative I use:
+For **interative** I use:
 
 * [Fish Shell](https://fishshell.com/)
 * [Starship](https://starship.rs/) for the prompt.
