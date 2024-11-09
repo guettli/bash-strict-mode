@@ -19,7 +19,7 @@ detect issues early, and make your scripts fail in a controlled way when somethi
 I use this at the top of my Bash scripts:
 
 ```bash
-#!/bin/bash
+#!/usr/bin/env bash
 trap 'echo "Warning: A command has failed. Exiting the script. Line was ($0:$LINENO): $(sed -n "${LINENO}p" "$0")"; exit 3' ERR
 set -Eeuo pipefail
 ```
@@ -27,16 +27,20 @@ set -Eeuo pipefail
 Let's have a closer look:
 
 ```bash
-#!/bin/bash
+#!/usr/bin/env bash
 ```
 
-This makes sure we use the Bash shell, and not a different shell. Writing portable shell scripts is more complicated, and I want to get things done, so I use Bash and its handy features.
+This makes sure we use the Bash shell, and not a different shell. Writing portable shell scripts is more complicated,
+and I want to get things done, so I use Bash and its handy features.
+
+The command `/usr/bin/env` lookups `bash` in `$PATH`. This is handy if `/bin/bash` is outdated on your system,
+and you installed a new version in your home directory
 
 ---
 
 This line prints a warning if the shell script terminates because a command returned a non-zero exit code:
 
-```
+```bash
 trap 'echo "Warning: A command has failed. Exiting the script. Line was ($0:$LINENO): $(sed -n "${LINENO}p" "$0")"; exit 3' ERR
 ```
 
@@ -204,9 +208,23 @@ target: prerequisites
 
 Instead of trying to understand the syntax of Makefile (for example `$(shell ...)`), I recommend to call a Bash script.
 
-## Misc: Shell vs Bash
+## Perl Compatible Regular Expressions: `grep -P`
 
-I think writing portable shell scripts is unnecessary in most cases. It is like trying to write a script that works in both Python and Ruby interpreters at the same time.
+Unfortunately there are several different flavours of regular expressions.
+
+Instead of learning the old regular expressions, I recommend to use the Perl Compatible Regular Expressions.
+
+The good news: `grep` supports PCRE with the `-P` flag. I suggest to use it.
+
+## I don't use `awk`
+
+I avoid use `awk`, because I am not familiar with the syntax, and from 1996 up to now this worked out fine.
+
+From time to time I use `perl` one-liners.
+
+## Shell vs Bash
+
+I think writing portable shell scripts is unnecessary in most cases. It is like trying to write a script that works in both, the Python and the Ruby interpreters at the same time. Don't do it. Be explicit and write a Bash script (not a shell script).
 
 ## shfmt
 
@@ -222,12 +240,21 @@ ShellCheck can recognize several types of incorrect quoting. It warns you about 
 
 This article is about Bash scripting.
 
-For interative usage on the terminal I use:
+For interative I use:
 
 * [Fish Shell](https://fishshell.com/)
 * [Starship](https://starship.rs/) for the prompt.
 * [Atuin](https://github.com/atuinsh/atuin) for the shell history.
 * [direnv](https://direnv.net/) to set directoy specific env variables.
+* [brew](https://brew.sh/)
+* [ripgrep](https://github.com/BurntSushi/ripgrep)
+* [fd find](https://github.com/sharkdp/fd)
+* [CopyQ](https://hluk.github.io/CopyQ/) Clipboard Manager
+* [Activity Watch](https://activitywatch.net/) Automatic time tracker
+* VSCode
+* Ubuntu LTS.
+
+Usualy don't use `ripgrep` and `fd` in Bash scripts, because these are not available on most systems.
 
 ## /r/bash
 
@@ -235,6 +262,6 @@ Thank you to [https://www.reddit.com/r/bash/](https://www.reddit.com/r/bash/)
 
 I got several good hints there.
 
-# More
+## More
 
 * [Thomas WOL: Working out Loud](https://github.com/guettli/wol)
