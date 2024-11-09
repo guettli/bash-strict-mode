@@ -164,7 +164,21 @@ My conclusion: Use strict mode!
 
 ## Part 2: General Hints and Opinions
 
+## To Bash or not to Bash
+
+Use the right tool. But which tool is the right one?
+
+I use Bash if I need to execute several Linux command-line tools (one after the other) to achieve my goal.
+
+This means the script is straightforward. There are no functions, only a few "if/else" statements (mostly for error handling) and a few loops.
+
+For example, provisioning a vanilla virtual machine into a custom virtual machine to meet specific requirements is such a task. Bash fits perfectly for that.
+
+Bash is not a real programming language. For applications, it’s better to use Golang or Python (in my opinion).
+
 ## General Bash Hints: Use sub-scripts instead of functions
+
+TODO: this is wrong. <https://www.reddit.com/r/bash/comments/1gmufop/comment/lw6s6ko/>
 
 I don't like writing functions in Bash scripts because functions return a plain string.
 
