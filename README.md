@@ -222,6 +222,8 @@ target: prerequisites
 
 Instead of trying to understand the syntax of Makefile (for example `$(shell ...)`), I recommend to call a Bash script.
 
+A Bash script has the benefit that formatting (shfmt) and ShellCheck are available in the editor.
+
 ## Perl Compatible Regular Expressions: `grep -P`
 
 Unfortunately there are several different flavours of regular expressions.
