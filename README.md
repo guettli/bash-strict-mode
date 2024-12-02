@@ -176,6 +176,35 @@ For example, provisioning a vanilla virtual machine into a custom virtual machin
 
 Bash is not a real programming language. For applications, it’s better to use Golang or Python (in my opinion).
 
+## General Bash Hints: Avoid `find ... | while read -r file` use `while read -r file; do ...; done < <(find ...)`
+
+Image you want to collect errors like this, and fail after the loop if the string error is not empty:
+
+```bash
+errors=""
+find ... | while read -r file; do
+    if ...; then
+        errors="$errors ..."
+    fi
+done
+
+if [ -n "$errors" ]; then
+    echo "failed: $errors"
+    exit 1
+fi
+```
+
+This won't work because the block in the loop is executed in a new subshell.
+Variables set inside a subshell are not accessible outside.
+
+If you do it like this, it works:
+
+```bash
+while read -r file; do
+    ...
+done < <(find ... )
+```
+
 ## General Bash Hints: Use sub-scripts instead of functions
 
 TODO: this is wrong. <https://www.reddit.com/r/bash/comments/1gmufop/comment/lw6s6ko/>
