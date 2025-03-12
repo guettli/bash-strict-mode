@@ -116,17 +116,26 @@ I disagree. The strict mode has consequences, and dealing with these consequence
 
 ## Bash Strict Mode: Handle unset variables
 
-This line would fail in strict mode if `VAR` is not set:
+This would fail in strict mode if `FOO` is not set:
 
 ```bash
-echo "${VAR?Variable is not set or is empty}"
+if [ -z "$FOO" ]; then
+    echo "Env var FOO is not set. Doing completely different things now ..."
+    do_different_things
+fi
 ```
 
-You can work around that easily by setting a default value:
+Output:
+
+> line N: FOO: unbound variable
+
+You can work around that easily by setting the value to the empty string:
 
 ```bash
-VAR="${VAR:-default_value}"
-echo "${VAR?Variable is not set or is empty}"
+if [ -z "${FOO:-}" ]; then
+    echo "Env var FOO is not set. Doing completely different things now ..."
+    do_different_things
+fi
 ```
 
 ## Bash Strict Mode: Handle non-zero exit codes
