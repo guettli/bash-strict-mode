@@ -234,20 +234,20 @@ Makefiles are similar to the strict mode. Let's look at an example:
 
 ```makefile
 target: prerequisites
-    command-1
-    command-2
-    command-3
+    recipe-command-1
+    recipe-command-2
+    recipe-command-3
 ```
 
-If `command-1` fails the Makefile stops, and does not execute `command-2`.
+If `recipe-command-1` fails the Makefile stops, and does not execute `recipe-command-2`.
 
 The syntax in a Makefile looks like shell, but it is not.
 
 As soon as the commands in a Makefile get complicated, I recommend to keep it simple:
 
 ```makefile
-target: prerequisites
-    ./bash-script-written-in-strict-mode.sh
+my-target: my-prerequisites1 my-prerequisites2
+    ./bin/my-target.sh
 ```
 
 Instead of trying to understand the syntax of Makefile (for example `$(shell ...)`), I recommend to call a Bash script.
