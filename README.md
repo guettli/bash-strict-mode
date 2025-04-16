@@ -168,6 +168,21 @@ echo -e "foo\nbar" | { grep '^#' >comments.txt || true; }
 
 With this pattern, you can easily ignore non-zero exit statuses.
 
+## Bash Strict Mode: Exit Status
+
+In most cases you just want to know: Was the command successful or not?
+
+If you want to know the exit code (`$?`) then you can use that pattern:
+
+```bash
+if some-command; then
+    code=0
+else
+    code=$?
+fi
+echo $code
+```
+
 ## Bash Strict Mode: Conclusion
 
 My conclusion: Use strict mode!
