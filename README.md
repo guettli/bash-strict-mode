@@ -198,6 +198,8 @@ false
 false
 ```
 
+If you use two lines, then Bash in strict mode will fail on the first non-zero exit status (here `false`):
+
 If you know a trick how to make `false && false` in Bash, please let me know!
 
 ## How to handle non-zero exist status in `if`
