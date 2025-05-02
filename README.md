@@ -183,6 +183,24 @@ fi
 echo $code
 ```
 
+## Bash Strict Mode: Avoid `&&`
+
+This does not fail:
+
+```
+false && false
+```
+
+To avoid that pitfall, avoid `&&` and use two lines instead:
+
+```
+false
+false
+```
+
+If you know a trick how to make `false && false` in Bash, please let me know!
+
+
 ## Bash Strict Mode: Conclusion
 
 My conclusion: Use strict mode!
