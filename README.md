@@ -351,6 +351,21 @@ For **interative** I use:
 
 Usualy don't use `ripgrep` and `fd` in Bash scripts, because these are not available on most systems.
 
+## `set -x` can reveal credentials
+
+Imagine you use credentials like this:
+
+```
+echo "$OCI_TOKEN" | oras manifest fetch --password-stdin $IMAGE_URL
+```
+
+If you use `set -x`, then every line gets printed. This will print the **content** of $OCI_TOKEN.
+
+This can reveal your secrets in the logs.
+
+Rule of thumb: Never use `set -x` in a script. Except temporarily for debugging, but do not commit it to the source code repo.
+
+
 ## /r/bash
 
 Thank you to [https://www.reddit.com/r/bash/](https://www.reddit.com/r/bash/)
