@@ -200,6 +200,17 @@ false
 
 If you know a trick how to make `false && false` in Bash, please let me know!
 
+## How to handle non-zero exist status in `if`
+
+If I want to distinguish between a successful command and non-zero:
+
+```bash
+if ./my-small-script.sh; then
+    echo "Success"
+else
+    echo "Failure"
+fi
+```
 
 ## Bash Strict Mode: Conclusion
 
@@ -250,25 +261,9 @@ done < <(find ... )
 
 ## General Bash Hints: Use sub-scripts instead of functions
 
-TODO: this is wrong. <https://www.reddit.com/r/bash/comments/1gmufop/comment/lw6s6ko/>
+I prefer to write a second (or third) Bash scripts to writing functions.
 
-I don't like writing functions in Bash scripts because functions return a plain string.
-
-You can't easily distinguish between a successful function call and a call that failed.
-
-Maybe I was brain-washed by Golang :-)
-
-That's why I prefer to write a small second or third script (with strict mode) and call that.
-
-If I want to distinguish between a successful function call and a call that failed, I can do it easily like this:
-
-```bash
-if ./my-small-script.sh; then
-    echo "Success"
-else
-    echo "Failure"
-fi
-```
+This provides a clean interface between your primary and secondary script.
 
 ## Makefiles
 
