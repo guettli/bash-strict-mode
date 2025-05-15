@@ -285,8 +285,8 @@ The syntax in a Makefile looks like shell, but it is not.
 As soon as the commands in a Makefile get complicated, I recommend to keep it simple:
 
 ```makefile
-my-target: my-prerequisites1 my-prerequisites2
-    ./bin/my-target.sh
+target: prerequisites
+    script-in-bash-strict-mode.sh
 ```
 
 Instead of trying to understand the syntax of Makefile (for example `$(shell ...)`), I recommend to call a Bash script.
