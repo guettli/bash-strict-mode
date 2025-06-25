@@ -351,6 +351,14 @@ It depends on the environment, but maybe a Bash script in strict mode is easier 
 
 Some years ago, we used SaltStack to provision and update a lot of virtual machines. We wasted so much time because things did not work as expected, or error messages got swallowed. In hindsight, we would have been much faster if we had taken the pragmatic approach (Bash) instead of being proud to use the same tools as big tech companies.
 
+## Avoid Fancy CI or GitHub Actions
+
+GitHub Actions (or similar CI tools) have a big drawback: You can't execute them on your local device.
+
+I try to keep our GitHub Actions simple: the YAML config calls Bash scripts, which I can also execute locally.
+
+You can use containers to ensure that all developers have the same environment.
+
 ## Interactive Shell
 
 This article is about Bash scripting.
