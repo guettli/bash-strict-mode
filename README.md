@@ -205,7 +205,7 @@ If you use two lines, then Bash in strict mode will fail on the first non-zero e
 This will fail:
 
 ```bash
-random_id=$(tr -dc '0-9a-z' </dev/urandom | head -c 7)
+random_id=$(tr -dc 'a-z0-9' </dev/urandom | head -c 7)
 ```
 
 Explanation: When `head` closes its output after reading 7 bytes, `tr` is still writing,
@@ -216,7 +216,7 @@ exit with a non-zero status (usually 141).
 This will work:
 
 ```bash
-random_id=$(tr -dc '0-9a-z' </dev/urandom | head -c 7 || true)
+random_id=$(tr -dc 'a-z0-9' </dev/urandom | head -c 7 || true)
 ```
 
 Thanks to Reddit user "aioeu" for the explanation: [cat file | head fails, when using "strict mode" : r/bash](https://www.reddit.com/r/bash/comments/1l8tjbx/comment/mx7b8ts/)
