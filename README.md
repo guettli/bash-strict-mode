@@ -157,13 +157,13 @@ In that case, I expect `comments.txt` to be an empty file, and the script should
 This code fails in strict mode:
 
 ```bash
-echo -e "foo\nbar" | grep '^#' >comments.txt
+echo -e "foo\nbar" | grep '^#' >comments.txt | some-other-command
 ```
 
 Workaround:
 
 ```bash
-echo -e "foo\nbar" | { grep '^#' >comments.txt || true; }
+echo -e "foo\nbar" | { grep '^#' >comments.txt || true; } | some-other-command
 ```
 
 With this pattern, you can easily ignore non-zero exit statuses.
