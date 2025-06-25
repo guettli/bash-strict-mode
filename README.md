@@ -200,9 +200,28 @@ false
 
 If you use two lines, then Bash in strict mode will fail on the first non-zero exit status (here `false`):
 
-If you know a trick how to make `false && false` in Bash, please let me know!
+## Bash Strict Mode: `head` Can Give You a Headache
 
-## How to handle non-zero exist status in `if`
+This will fail:
+
+```bash
+random_id=$(tr -dc '0-9a-z' </dev/urandom | head -c 7)
+```
+
+Explanation: When `head` closes its output after reading 7 bytes, `tr` is still writing,
+but suddenly its output pipe is gone. This causes `tr` to receive a SIGPIPE and
+exit with a non-zero status (usually 141). 
+
+
+This will work:
+
+```bash
+random_id=$(tr -dc '0-9a-z' </dev/urandom | head -c 7 || true)
+```
+
+Thanks to Redddit use aioeu for the explanation: [cat file | head fails, when using "strict mode" : r/bash](https://www.reddit.com/r/bash/comments/1l8tjbx/comment/mx7b8ts/)
+
+## Bash Strict Mode: How to handle non-zero exist status in `if`
 
 If I want to distinguish between a successful command and non-zero:
 
@@ -213,6 +232,7 @@ else
     echo "Failure"
 fi
 ```
+
 
 ## Bash Strict Mode: Conclusion
 
