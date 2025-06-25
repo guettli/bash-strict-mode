@@ -219,7 +219,7 @@ This will work:
 random_id=$(tr -dc '0-9a-z' </dev/urandom | head -c 7 || true)
 ```
 
-Thanks to Redddit use aioeu for the explanation: [cat file | head fails, when using "strict mode" : r/bash](https://www.reddit.com/r/bash/comments/1l8tjbx/comment/mx7b8ts/)
+Thanks to Reddit user "aioeu" for the explanation: [cat file | head fails, when using "strict mode" : r/bash](https://www.reddit.com/r/bash/comments/1l8tjbx/comment/mx7b8ts/)
 
 ## Bash Strict Mode: How to handle non-zero exist status in `if`
 
