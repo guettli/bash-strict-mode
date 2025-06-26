@@ -323,9 +323,19 @@ The good news: `grep` supports PCRE with the `-P` flag. I suggest to use it.
 
 ## I don't use `awk`
 
-I avoid use `awk`, because I am not familiar with the syntax, and from 1996 up to now this worked out fine.
+I avoid using `awk` because I am not familiar with its syntax, and from 1996 up to now, this has worked out fine for me.
 
-From time to time I use `perl` one-liners.
+The only time I use `awk` is when the input is split by whitespace and the length varies. 
+
+Example: I want to print the second column:
+
+```bash
+command-which-prints-columns | awk '{print $2}'
+```
+
+From time to time, I use `perl` one-liners.
+
+
 
 ## Shell vs Bash
 
