@@ -185,7 +185,12 @@ echo $code
 
 ## Bash Strict Mode: Avoid `&&`
 
-This does not fail:
+When using the Bash Strict Mode, you want commands which fail (exit status not 0) to fail. Execution
+of the script should be stopped.
+
+Imagine there are two commands combined with `&&`. The non-zero exit status does not get noticed.
+
+(`false` is a command which has exit status 1)
 
 ```
 false && false
