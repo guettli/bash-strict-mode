@@ -292,6 +292,39 @@ I prefer to write a second (or third) Bash scripts to writing functions.
 
 This provides a clean interface between your primary and secondary script.
 
+## General Bash Hints: Concurrency
+
+If you want to execute two tasks concurrently, you can do it like this:
+
+```bash
+# Bash Strict Mode: https://github.com/guettli/bash-strict-mode
+trap 'echo -e "\n🤷 🚨 🔥 Warning: A command has failed. Exiting the script. Line was ($0:$LINENO): $(sed -n "${LINENO}p" "$0" 2>/dev/null || true) 🔥 🚨 🤷 "; exit 3' ERR
+set -Eeuo pipefail
+
+{
+    echo task 1
+    sleep 1
+} & task1_pid=$!
+
+{
+    echo task 2
+    sleep 2
+} & task2_pid=$!
+
+# Wait each PID on its own line so you get each child's exit status.
+wait "$task1_pid"
+wait "$task2_pid"
+
+echo end
+```
+
+Why wait each PID separately?
+
+- You must wait to reap background children and avoid zombies.
+- `wait pid1 pid2` will wait for both PIDs, but its exit status is the exit status of the last PID
+  waited for. This means an earlier background job can fail yet the combined `wait` can still return
+  success if the last job succeeds — not what you want if you need to detect failures reliably.
+
 ## Makefiles
 
 Makefiles are similar to the strict mode. Let's look at an example:
