@@ -8,7 +8,7 @@ Bash; this is my personal point of view.
 If you think there is something wrong or could be improved, please create an issue in this GitHub
 project. Thank you!
 
-This text contains to parts: Bash Strict Mode and General Hints and Opinions
+This text contains two parts: Bash Strict Mode and General Hints and Opinions
 
 ## Part 1: Bash Strict Mode
 
@@ -242,7 +242,7 @@ random_id=$(tr -dc 'a-z0-9' </dev/urandom | head -c 7 || true)
 Thanks to Reddit user "aioeu" for the explanation: [cat file | head fails, when using "strict mode"
 : r/bash](https://www.reddit.com/r/bash/comments/1l8tjbx/comment/mx7b8ts/)
 
-## Bash Strict Mode: How to handle non-zero exist status in `if`
+## Bash Strict Mode: How to handle non-zero exit status in `if`
 
 If I want to distinguish between a successful command and non-zero:
 
@@ -443,12 +443,12 @@ You can use containers to ensure that all developers have the same environment.
 
 This article is about Bash scripting.
 
-For **interative** I use:
+For **interactive** I use:
 
 - [Fish Shell](https://fishshell.com/)
 - [Starship](https://starship.rs/) for the prompt.
 - [Atuin](https://github.com/atuinsh/atuin) for the shell history.
-- [direnv](https://direnv.net/) to set directoy specific env variables.
+- [direnv](https://direnv.net/) to set directory specific env variables.
 - [brew](https://brew.sh/)
 - [ripgrep](https://github.com/BurntSushi/ripgrep)
 - [fd find](https://github.com/sharkdp/fd)
@@ -457,7 +457,7 @@ For **interative** I use:
 - VSCode
 - Ubuntu LTS.
 
-Usualy don't use `ripgrep` and `fd` in Bash scripts, because these are not available on most
+Usually don't use `ripgrep` and `fd` in Bash scripts, because these are not available on most
 systems.
 
 ## `set -x` can reveal credentials
