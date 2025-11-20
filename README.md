@@ -152,7 +152,7 @@ if [ -z "${FOO:-}" ]; then
 fi
 ```
 
-## Bash Strict Mode: Handle non-zero exit codes
+## Bash Strict Mode: Handle Non-Zero Exit Codes
 
 Non-zero exit codes often indicate an error, but not always.
 
@@ -242,7 +242,7 @@ random_id=$(tr -dc 'a-z0-9' </dev/urandom | head -c 7 || true)
 Thanks to Reddit user "aioeu" for the explanation: [cat file | head fails, when using "strict mode"
 : r/bash](https://www.reddit.com/r/bash/comments/1l8tjbx/comment/mx7b8ts/)
 
-## Bash Strict Mode: How to handle non-zero exit status in `if`
+## Bash Strict Mode: How to Handle Non-Zero Exit Status in `if`
 
 If I want to distinguish between a successful command and non-zero:
 
@@ -260,7 +260,7 @@ My conclusion: Use strict mode!
 
 ## Part 2: General Hints and Opinions
 
-## To Bash or not to Bash
+## To Bash or Not to Bash
 
 Use the right tool. But which tool is the right one?
 
@@ -276,7 +276,7 @@ requirements is such a task. Bash fits perfectly for that.
 Bash is not a real programming language. For applications, it’s better to use Golang or Python (in
 my opinion).
 
-## General Bash Hints: Avoid `find ... | while read -r file` use `while read -r file; do ...; done < <(find ...)`
+## General Bash Hints: Avoid `find ... | while read -r file` — Use `while read -r file; do ...; done < <(find ...)`
 
 Imagine you want to collect errors like this, and fail after the loop if the string error is not
 empty:
@@ -306,7 +306,7 @@ while read -r file; do
 done < <(find ... )
 ```
 
-## General Bash Hints: Use sub-scripts instead of functions
+## General Bash Hints: Use Sub-scripts Instead of Functions
 
 I prefer to write a second (or third) Bash script instead of writing functions.
 
@@ -381,7 +381,7 @@ Expressions.
 
 The good news: `grep` supports PCRE with the `-P` flag. I suggest to use it.
 
-## I don't use `awk`
+## I Don't Use `awk`
 
 I avoid using `awk` because I am not familiar with its syntax, and from 1996 up to now, this has
 worked out fine for me.
@@ -460,7 +460,7 @@ For **interactive** I use:
 Usually don't use `ripgrep` and `fd` in Bash scripts, because these are not available on most
 systems.
 
-## `set -x` can reveal credentials
+## `set -x` Can Reveal Credentials
 
 Imagine you use credentials like this:
 
