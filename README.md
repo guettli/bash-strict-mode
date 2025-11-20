@@ -37,8 +37,8 @@ Let's have a closer look:
 This makes sure we use the Bash shell, and not a different shell. Writing portable shell scripts is
 more complicated, and I want to get things done, so I use Bash and its handy features.
 
-The command `/usr/bin/env` lookups `bash` in `$PATH`. This is handy if `/bin/bash` is outdated on
-your system, and you installed a new version in your home directory
+The command `/usr/bin/env` looks up `bash` in `$PATH`. This is handy if `/bin/bash` is outdated on
+your system, and you installed a new version in your home directory.
 
 ---
 
@@ -308,7 +308,7 @@ done < <(find ... )
 
 ## General Bash Hints: Use sub-scripts instead of functions
 
-I prefer to write a second (or third) Bash scripts to writing functions.
+I prefer to write a second (or third) Bash script instead of writing functions.
 
 This provides a clean interface between your primary and secondary script.
 
