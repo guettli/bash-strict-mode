@@ -2,17 +2,20 @@
 
 ## Introduction
 
-In this text, I explain how I use the Bash shell. Of course, there are several other ways to use Bash; this is my personal point of view.
+In this text, I explain how I use the Bash shell. Of course, there are several other ways to use
+Bash; this is my personal point of view.
 
-If you think there is something wrong or could be improved, please create an issue in this GitHub project. Thank you!
+If you think there is something wrong or could be improved, please create an issue in this GitHub
+project. Thank you!
 
 This text contains to parts: Bash Strict Mode and General Hints and Opinions
 
 ## Part 1: Bash Strict Mode
 
 Bash strict mode refers to a set of options and practices used in Bash scripting to make scripts
-more robust, reliable, and easier to debug. By enabling strict mode, you can prevent common scripting errors,
-detect issues early, and make your scripts fail in a controlled way when something unexpected happens.
+more robust, reliable, and easier to debug. By enabling strict mode, you can prevent common
+scripting errors, detect issues early, and make your scripts fail in a controlled way when something
+unexpected happens.
 
 ## Bash Strict Mode: Activating it
 
@@ -31,15 +34,16 @@ Let's have a closer look:
 #!/usr/bin/env bash
 ```
 
-This makes sure we use the Bash shell, and not a different shell. Writing portable shell scripts is more complicated,
-and I want to get things done, so I use Bash and its handy features.
+This makes sure we use the Bash shell, and not a different shell. Writing portable shell scripts is
+more complicated, and I want to get things done, so I use Bash and its handy features.
 
-The command `/usr/bin/env` lookups `bash` in `$PATH`. This is handy if `/bin/bash` is outdated on your system,
-and you installed a new version in your home directory
+The command `/usr/bin/env` lookups `bash` in `$PATH`. This is handy if `/bin/bash` is outdated on
+your system, and you installed a new version in your home directory
 
 ---
 
-This line prints a warning if the shell script terminates because a command returned a non-zero exit code:
+This line prints a warning if the shell script terminates because a command returned a non-zero exit
+code:
 
 ```bash
 trap 'echo "Warning: A command has failed. Exiting the script. Line was ($0:$LINENO): $(sed -n "${LINENO}p" "$0")"; exit 3' ERR
@@ -47,7 +51,9 @@ trap 'echo "Warning: A command has failed. Exiting the script. Line was ($0:$LIN
 
 It shows the line that caused the shell script to exit and exits with `3`.
 
-Why `3`? I use that according to the [Nagios Plugin Return Codes](https://nagios-plugins.org/doc/guidelines.html), although I don't use Nagios anymore. `3` means "Unknown."
+Why `3`? I use that according to the [Nagios Plugin Return
+Codes](https://nagios-plugins.org/doc/guidelines.html), although I don't use Nagios anymore. `3`
+means "Unknown."
 
 ---
 
@@ -55,22 +61,27 @@ Why `3`? I use that according to the [Nagios Plugin Return Codes](https://nagios
 set -Eeuo pipefail
 ```
 
-`-E`: **ERR Trap Inheritance** Ensures that the ERR trap is inherited by shell functions, command substitutions, and subshells.
+`-E`: **ERR Trap Inheritance** Ensures that the ERR trap is inherited by shell functions, command
+substitutions, and subshells.
 
-`-e`: **Exit on Error** Causes the script to immediately exit if any command returns a non-zero exit status unless that command is followed by `||` to explicitly handle the error.
+`-e`: **Exit on Error** Causes the script to immediately exit if any command returns a non-zero exit
+status unless that command is followed by `||` to explicitly handle the error.
 
-`-u`: **Undefined Variables** Treats the use of undefined variables as an error, causing the script to exit.
+`-u`: **Undefined Variables** Treats the use of undefined variables as an error, causing the script
+to exit.
 
-`-o pipefail`: **Pipeline Failure** Ensures that a pipeline (a series of commands connected by `|`) fails if any command within it fails, rather than only failing if the last command fails.
+`-o pipefail`: **Pipeline Failure** Ensures that a pipeline (a series of commands connected by `|`)
+fails if any command within it fails, rather than only failing if the last command fails.
 
 ## Bash Strict Mode: Errors should never pass silently
 
 Quoting the [Zen of Python](https://peps.python.org/pep-0020/):
 
-> Errors should never pass silently.
-> Unless explicitly silenced.
+> Errors should never pass silently. Unless explicitly silenced.
 
-I think the above strict mode ensures that errors don’t go unnoticed and prevents scripts from running into unexpected issues. I prefer a command to fail and show me the failed line, rather than the default behavior of bash (continuing with the next line in the script).
+I think the above strict mode ensures that errors don’t go unnoticed and prevents scripts from
+running into unexpected issues. I prefer a command to fail and show me the failed line, rather than
+the default behavior of bash (continuing with the next line in the script).
 
 ## Bash Strict Mode: Simple Example
 
@@ -108,11 +119,14 @@ And the exit status of the script will be `3`, which indicates an error.
 
 If you post about `set -e` on the Bash subreddit, you get an automated comment like this:
 
-[Don't blindly use set -euo pipefail.](https://www.reddit.com/r/commandline/comments/g1vsxk/comment/fniifmk/)
+[Don't blindly use set -euo
+pipefail.](https://www.reddit.com/r/commandline/comments/g1vsxk/comment/fniifmk/)
 
 The link explains why you should not use `set -Eeuo pipefail` everywhere.
 
-I disagree. The strict mode has consequences, and dealing with these consequences requires some extra typing. But typing is not the bottleneck. I prefer to type a bit more if it results in more reliable Bash scripts.
+I disagree. The strict mode has consequences, and dealing with these consequences requires some
+extra typing. But typing is not the bottleneck. I prefer to type a bit more if it results in more
+reliable Bash scripts.
 
 ## Bash Strict Mode: Handle unset variables
 
@@ -152,7 +166,8 @@ echo -e "foo\n#comment\nbar" | grep '^#' >comments.txt
 
 The code above works in strict mode because there is a match. But it fails if there is no comment.
 
-In that case, I expect `comments.txt` to be an empty file, and the script should not fail but continue to the next line.
+In that case, I expect `comments.txt` to be an empty file, and the script should not fail but
+continue to the next line.
 
 This code fails in strict mode:
 
@@ -203,7 +218,8 @@ false
 false
 ```
 
-If you use two lines, then Bash in strict mode will fail on the first non-zero exit status (here the first `false`):
+If you use two lines, then Bash in strict mode will fail on the first non-zero exit status (here the
+first `false`):
 
 ## Bash Strict Mode: `head` Can Give You a Headache
 
@@ -213,9 +229,9 @@ This will fail:
 random_id=$(tr -dc 'a-z0-9' </dev/urandom | head -c 7)
 ```
 
-Explanation: When `head` closes its output after reading 7 bytes, `tr` is still writing,
-but suddenly its output pipe is gone. This causes `tr` to receive a SIGPIPE and
-exit with a non-zero status (usually 141).
+Explanation: When `head` closes its output after reading 7 bytes, `tr` is still writing, but
+suddenly its output pipe is gone. This causes `tr` to receive a SIGPIPE and exit with a non-zero
+status (usually 141).
 
 This will work:
 
@@ -223,7 +239,8 @@ This will work:
 random_id=$(tr -dc 'a-z0-9' </dev/urandom | head -c 7 || true)
 ```
 
-Thanks to Reddit user "aioeu" for the explanation: [cat file | head fails, when using "strict mode" : r/bash](https://www.reddit.com/r/bash/comments/1l8tjbx/comment/mx7b8ts/)
+Thanks to Reddit user "aioeu" for the explanation: [cat file | head fails, when using "strict mode"
+: r/bash](https://www.reddit.com/r/bash/comments/1l8tjbx/comment/mx7b8ts/)
 
 ## Bash Strict Mode: How to handle non-zero exist status in `if`
 
@@ -247,17 +264,22 @@ My conclusion: Use strict mode!
 
 Use the right tool. But which tool is the right one?
 
-I use Bash if I need to execute several Linux command-line tools (one after the other) to achieve my goal.
+I use Bash if I need to execute several Linux command-line tools (one after the other) to achieve my
+goal.
 
-This means the script is straightforward. There are no functions, only a few "if/else" statements (mostly for error handling) and a few loops.
+This means the script is straightforward. There are no functions, only a few "if/else" statements
+(mostly for error handling) and a few loops.
 
-For example, provisioning a vanilla virtual machine into a custom virtual machine to meet specific requirements is such a task. Bash fits perfectly for that.
+For example, provisioning a vanilla virtual machine into a custom virtual machine to meet specific
+requirements is such a task. Bash fits perfectly for that.
 
-Bash is not a real programming language. For applications, it’s better to use Golang or Python (in my opinion).
+Bash is not a real programming language. For applications, it’s better to use Golang or Python (in
+my opinion).
 
 ## General Bash Hints: Avoid `find ... | while read -r file` use `while read -r file; do ...; done < <(find ...)`
 
-Image you want to collect errors like this, and fail after the loop if the string error is not empty:
+Image you want to collect errors like this, and fail after the loop if the string error is not
+empty:
 
 ```bash
 errors=""
@@ -273,8 +295,8 @@ if [ -n "$errors" ]; then
 fi
 ```
 
-This won't work because the block in the loop is executed in a new subshell.
-Variables set inside a subshell are not accessible outside.
+This won't work because the block in the loop is executed in a new subshell. Variables set inside a
+subshell are not accessible outside.
 
 If you do it like this, it works:
 
@@ -345,7 +367,8 @@ target: prerequisites
     script-in-bash-strict-mode.sh
 ```
 
-Instead of trying to understand the syntax of Makefile (for example `$(shell ...)`), I recommend to call a Bash script.
+Instead of trying to understand the syntax of Makefile (for example `$(shell ...)`), I recommend to
+call a Bash script.
 
 A Bash script has the benefit that formatting (shfmt) and ShellCheck are available in the editor.
 
@@ -353,13 +376,15 @@ A Bash script has the benefit that formatting (shfmt) and ShellCheck are availab
 
 Unfortunately there are several different flavours of regular expressions.
 
-Instead of learning the old regular expressions, I recommend to use the Perl Compatible Regular Expressions.
+Instead of learning the old regular expressions, I recommend to use the Perl Compatible Regular
+Expressions.
 
 The good news: `grep` supports PCRE with the `-P` flag. I suggest to use it.
 
 ## I don't use `awk`
 
-I avoid using `awk` because I am not familiar with its syntax, and from 1996 up to now, this has worked out fine for me.
+I avoid using `awk` because I am not familiar with its syntax, and from 1996 up to now, this has
+worked out fine for me.
 
 The only time I use `awk` is when the input is split by whitespace and the length varies.
 
@@ -373,17 +398,23 @@ From time to time, I use `perl` one-liners.
 
 ## Shell vs Bash
 
-I think writing portable shell scripts is unnecessary in most cases. It is like trying to write a script that works in both, the Python and the Ruby interpreters at the same time. Don't do it. Be explicit and write a Bash script (not a shell script).
+I think writing portable shell scripts is unnecessary in most cases. It is like trying to write a
+script that works in both, the Python and the Ruby interpreters at the same time. Don't do it. Be
+explicit and write a Bash script (not a shell script).
 
 ## shfmt
 
-There is a handy shell formatter: [shfmt](https://github.com/mvdan/sh#shfmt) and a [VS Code plugin shell-format](https://marketplace.visualstudio.com/items?itemName=foxundermoon.shell-format).
+There is a handy shell formatter: [shfmt](https://github.com/mvdan/sh#shfmt) and a [VS Code plugin
+shell-format](https://marketplace.visualstudio.com/items?itemName=foxundermoon.shell-format).
 
 ## ShellCheck
 
-There is [ShellCheck](https://github.com/koalaman/shellcheck) and a [VS Code plugin for ShellCheck](https://marketplace.visualstudio.com/items?itemName=timonwong.shellcheck) which helps you find errors in your script.
+There is [ShellCheck](https://github.com/koalaman/shellcheck) and a [VS Code plugin for
+ShellCheck](https://marketplace.visualstudio.com/items?itemName=timonwong.shellcheck) which helps
+you find errors in your script.
 
-ShellCheck can recognize several types of incorrect quoting. It warns you about every unquoted variable. Since it is not much work, I follow ShellCheck's recommendations.
+ShellCheck can recognize several types of incorrect quoting. It warns you about every unquoted
+variable. Since it is not much work, I follow ShellCheck's recommendations.
 
 ## Provisioning a machine: Fancy Tools or boring Bash?
 
@@ -393,13 +424,18 @@ All of them have their learning costs.
 
 It depends on the environment, but maybe a Bash script in strict mode is easier to maintain.
 
-Some years ago, we used SaltStack to provision and update a lot of virtual machines. We wasted so much time because things did not work as expected, or error messages got swallowed. In hindsight, we would have been much faster if we had taken the pragmatic approach (Bash) instead of being proud to use the same tools as big tech companies.
+Some years ago, we used SaltStack to provision and update a lot of virtual machines. We wasted so
+much time because things did not work as expected, or error messages got swallowed. In hindsight, we
+would have been much faster if we had taken the pragmatic approach (Bash) instead of being proud to
+use the same tools as big tech companies.
 
 ## Avoid Fancy CI or GitHub Actions
 
-GitHub Actions (or similar CI tools) have a big drawback: You can't execute them on your local device.
+GitHub Actions (or similar CI tools) have a big drawback: You can't execute them on your local
+device.
 
-I try to keep our GitHub Actions simple: the YAML config calls Bash scripts, which I can also execute locally.
+I try to keep our GitHub Actions simple: the YAML config calls Bash scripts, which I can also
+execute locally.
 
 You can use containers to ensure that all developers have the same environment.
 
@@ -421,7 +457,8 @@ For **interative** I use:
 - VSCode
 - Ubuntu LTS.
 
-Usualy don't use `ripgrep` and `fd` in Bash scripts, because these are not available on most systems.
+Usualy don't use `ripgrep` and `fd` in Bash scripts, because these are not available on most
+systems.
 
 ## `set -x` can reveal credentials
 
@@ -435,7 +472,8 @@ If you use `set -x`, then every line gets printed. This will print the **content
 
 This can reveal your secrets in the logs.
 
-Rule of thumb: Never use `set -x` in a script. Except temporarily for debugging, but do not commit it to the source code repo.
+Rule of thumb: Never use `set -x` in a script. Except temporarily for debugging, but do not commit
+it to the source code repo.
 
 ## /r/bash
 
