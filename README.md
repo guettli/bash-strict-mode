@@ -278,7 +278,7 @@ my opinion).
 
 ## General Bash Hints: Avoid `find ... | while read -r file` use `while read -r file; do ...; done < <(find ...)`
 
-Image you want to collect errors like this, and fail after the loop if the string error is not
+Imagine you want to collect errors like this, and fail after the loop if the string error is not
 empty:
 
 ```bash
