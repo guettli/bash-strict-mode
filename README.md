@@ -8,7 +8,7 @@ Bash; this is my personal point of view.
 If you think there is something wrong or could be improved, please create an issue in this GitHub
 project. Thank you!
 
-This text contains two parts: Bash Strict Mode and General Hints and Opinions
+This text contains two parts: Bash Strict Mode and General Hints and Opinions.
 
 ## Part 1: Bash Strict Mode
 
@@ -17,7 +17,7 @@ more robust, reliable, and easier to debug. By enabling strict mode, you can pre
 scripting errors, detect issues early, and make your scripts fail in a controlled way when something
 unexpected happens.
 
-## Bash Strict Mode: Activating it
+## Bash Strict Mode: Activating It
 
 I use this at the top of my Bash scripts:
 
@@ -34,7 +34,7 @@ Let's have a closer look:
 #!/usr/bin/env bash
 ```
 
-This makes sure we use the Bash shell, and not a different shell. Writing portable shell scripts is
+This makes sure we use the Bash shell and not a different shell. Writing portable shell scripts is
 more complicated, and I want to get things done, so I use Bash and its handy features.
 
 The command `/usr/bin/env` looks up `bash` in `$PATH`. This is handy if `/bin/bash` is outdated on
@@ -73,7 +73,7 @@ to exit.
 `-o pipefail`: **Pipeline Failure** Ensures that a pipeline (a series of commands connected by `|`)
 fails if any command within it fails, rather than only failing if the last command fails.
 
-## Bash Strict Mode: Errors should never pass silently
+## Bash Strict Mode: Errors Should Never Pass Silently
 
 Quoting the [Zen of Python](https://peps.python.org/pep-0020/):
 
@@ -81,7 +81,7 @@ Quoting the [Zen of Python](https://peps.python.org/pep-0020/):
 
 I think the above strict mode ensures that errors don’t go unnoticed and prevents scripts from
 running into unexpected issues. I prefer a command to fail and show me the failed line, rather than
-the default behavior of bash (continuing with the next line in the script).
+the default behavior of Bash (continuing with the next line in the script).
 
 ## Bash Strict Mode: Simple Example
 
@@ -106,7 +106,7 @@ The script terminates with a zero (meaning "OK") exit status, even though someth
 
 That's something I would like to avoid.
 
-If you use strict mode, then you will get:
+With strict mode enabled, you will get:
 
 ```terminal
 grep: bar.txt: No such file or directory
@@ -115,7 +115,7 @@ Warning: A command has failed. Exiting the script. Line was (/home/user/tmp/t.sh
 
 And the exit status of the script will be `3`, which indicates an error.
 
-## Bash Strict Mode: Use it blindly?
+## Bash Strict Mode: Use It Blindly?
 
 If you post about `set -e` on the Bash subreddit, you get an automated comment like this:
 
@@ -124,11 +124,11 @@ pipefail.](https://www.reddit.com/r/commandline/comments/g1vsxk/comment/fniifmk/
 
 The link explains why you should not use `set -Eeuo pipefail` everywhere.
 
-I disagree. The strict mode has consequences, and dealing with these consequences requires some
-extra typing. But typing is not the bottleneck. I prefer to type a bit more if it results in more
-reliable Bash scripts.
+I disagree. Strict mode has consequences, and dealing with these consequences requires some extra
+typing. But typing is not the bottleneck. I prefer to type a bit more if it results in more reliable
+Bash scripts.
 
-## Bash Strict Mode: Handle unset variables
+## Bash Strict Mode: Handle Unset Variables
 
 This would fail in strict mode if `FOO` is not set:
 
