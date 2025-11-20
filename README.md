@@ -192,13 +192,13 @@ Imagine there are two commands combined with `&&`. The non-zero exit status does
 
 (`false` is a command which has exit status 1)
 
-```
+```bash
 false && false
 ```
 
 To avoid that pitfall, avoid `&&` and use two lines instead:
 
-```
+```bash
 false
 false
 ```
@@ -215,8 +215,7 @@ random_id=$(tr -dc 'a-z0-9' </dev/urandom | head -c 7)
 
 Explanation: When `head` closes its output after reading 7 bytes, `tr` is still writing,
 but suddenly its output pipe is gone. This causes `tr` to receive a SIGPIPE and
-exit with a non-zero status (usually 141). 
-
+exit with a non-zero status (usually 141).
 
 This will work:
 
@@ -237,7 +236,6 @@ else
     echo "Failure"
 fi
 ```
-
 
 ## Bash Strict Mode: Conclusion
 
@@ -363,7 +361,7 @@ The good news: `grep` supports PCRE with the `-P` flag. I suggest to use it.
 
 I avoid using `awk` because I am not familiar with its syntax, and from 1996 up to now, this has worked out fine for me.
 
-The only time I use `awk` is when the input is split by whitespace and the length varies. 
+The only time I use `awk` is when the input is split by whitespace and the length varies.
 
 Example: I want to print the second column:
 
@@ -372,8 +370,6 @@ command-which-prints-columns | awk '{print $2}'
 ```
 
 From time to time, I use `perl` one-liners.
-
-
 
 ## Shell vs Bash
 
@@ -413,17 +409,17 @@ This article is about Bash scripting.
 
 For **interative** I use:
 
-* [Fish Shell](https://fishshell.com/)
-* [Starship](https://starship.rs/) for the prompt.
-* [Atuin](https://github.com/atuinsh/atuin) for the shell history.
-* [direnv](https://direnv.net/) to set directoy specific env variables.
-* [brew](https://brew.sh/)
-* [ripgrep](https://github.com/BurntSushi/ripgrep)
-* [fd find](https://github.com/sharkdp/fd)
-* [CopyQ](https://hluk.github.io/CopyQ/) Clipboard Manager
-* [Activity Watch](https://activitywatch.net/) Automatic time tracker
-* VSCode
-* Ubuntu LTS.
+- [Fish Shell](https://fishshell.com/)
+- [Starship](https://starship.rs/) for the prompt.
+- [Atuin](https://github.com/atuinsh/atuin) for the shell history.
+- [direnv](https://direnv.net/) to set directoy specific env variables.
+- [brew](https://brew.sh/)
+- [ripgrep](https://github.com/BurntSushi/ripgrep)
+- [fd find](https://github.com/sharkdp/fd)
+- [CopyQ](https://hluk.github.io/CopyQ/) Clipboard Manager
+- [Activity Watch](https://activitywatch.net/) Automatic time tracker
+- VSCode
+- Ubuntu LTS.
 
 Usualy don't use `ripgrep` and `fd` in Bash scripts, because these are not available on most systems.
 
@@ -431,7 +427,7 @@ Usualy don't use `ripgrep` and `fd` in Bash scripts, because these are not avail
 
 Imagine you use credentials like this:
 
-```
+```bash
 echo "$OCI_TOKEN" | oras manifest fetch --password-stdin $IMAGE_URL
 ```
 
@@ -441,7 +437,6 @@ This can reveal your secrets in the logs.
 
 Rule of thumb: Never use `set -x` in a script. Except temporarily for debugging, but do not commit it to the source code repo.
 
-
 ## /r/bash
 
 Thank you to [https://www.reddit.com/r/bash/](https://www.reddit.com/r/bash/)
@@ -450,4 +445,4 @@ I got several good hints there.
 
 ## More
 
-* [Thomas WOL: Working out Loud](https://github.com/guettli/wol)
+[Thomas WOL: Working out Loud](https://github.com/guettli/wol)
