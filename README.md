@@ -475,6 +475,30 @@ This can reveal your secrets in the logs.
 Rule of thumb: Never use `set -x` in a script. Except temporarily for debugging, but do not commit
 it to the source code repo.
 
+Your text is clear and has a great personal tone, but a few tweaks to the phrasing and flow will make it sound even more professional. Here is a polished version:
+
+
+## Nix: Defining Dependencies with Flakes
+
+In the Python world, we have **virtual environments**. They are incredibly handy because they allow you to maintain multiple environments, each with its own custom dependencies and specific versions.
+
+Almost every programming language has a similar concept, but what about **Bash scripts**? While you can manually modify your `PATH`—and for small projects, that might work—it quickly becomes difficult to manage.
+
+If you want a **declarative** way to define dependencies, [Nix Flakes](https://nixos.wiki/wiki/Flakes) is the best solution I’ve found.
+
+Admittedly, some parts of Nix can be difficult for newcomers to grasp. However, Large Language Models (LLMs) and your favorite search engine support you.
+
+Personally, I think it’s time to say "goodbye" to Makefiles and scripts that manually install tools.
+
+Should you install *everything* via Nix?
+
+My approach is to install the **base tools** via Nix and then let language-specific package managers handle the version pinning:
+
+* **Go:** `go.mod` / `go.sum`
+* **JS:** `package.json` / `package-lock.json`
+* **Ruby:** `Gemfile` / `Gemfile.lock`
+* ....
+
 ## /r/bash
 
 Thank you to [https://www.reddit.com/r/bash/](https://www.reddit.com/r/bash/)
