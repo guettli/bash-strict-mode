@@ -530,6 +530,15 @@ if [[ -z ${DIRENV_DIR:-} ]]; then
 fi
 ```
 
+To make this work, you should install `direnv` and `nix-direnv`, so that it is availble before you enter the Nix env.
+
+You can do that like this:
+
+```bash
+nix profile add nixpkgs#direnv nixpkgs#nix-direnv 
+```
+This will install the binaries into `$HOME/.nix-profile/bin`.
+
 
 ## /r/bash
 
