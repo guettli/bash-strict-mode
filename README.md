@@ -551,6 +551,8 @@ This way I have all I want to replace Makefiles:
 - Direnv to enter the "virtual environment" and set env vars
 - Scripts can be executed from outside, and the env gets entered automatically.
 
+Of course there is a drawback: Developers need `nix`, `direnv` and `nix-direnv` to be able to execute scripts.
+
 ## /r/bash
 
 Thank you to [https://www.reddit.com/r/bash/](https://www.reddit.com/r/bash/)
