@@ -545,6 +545,11 @@ nix profile add nixpkgs#direnv nixpkgs#nix-direnv
 ```
 This will install the binaries into `$HOME/.nix-profile/bin`.
 
+This way I have all I want to replace Makefiles:
+
+- Nix Flakes for pinning dependencies
+- Direnv to enter the "virtual environment" and set env vars
+- Scripts can be executed from outside, and the env gets entered automatically.
 
 ## /r/bash
 
