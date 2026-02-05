@@ -545,13 +545,13 @@ nix profile add nixpkgs#direnv nixpkgs#nix-direnv
 ```
 This will install the binaries into `$HOME/.nix-profile/bin`.
 
-This way I have all I want to replace Makefiles:
+This way I have all I want to replace Makefiles and Docker containers which provide isolated build environments:
 
 - Nix Flakes for pinning dependencies
 - Direnv to enter the "virtual environment" and set env vars
 - Scripts can be executed from outside, and the env gets entered automatically.
 
-Of course there is a drawback: Developers need `nix`, `direnv` and `nix-direnv` to be able to execute scripts.
+No Docker, no Makefiles .... I love it.
 
 ## /r/bash
 
