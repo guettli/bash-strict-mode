@@ -522,12 +522,18 @@ When I enter the directory with `cd`, then the Nix env gets activated.
 
 To auto-enter the nix environment (for example for coding agents - they do not evaluated `.envrc`):
 
-`some-script.sh`:
+At the top my Bash scripts:
 ```bash
+#!/usr/bin/env bash
+#...
+
 if [[ -z ${DIRENV_DIR:-} ]]; then
     echo "not in direnv; re-running via direnv"
     exec direnv exec . "$0" "$@"
 fi
+
+# ...
+
 ```
 
 To make this work, you should install `direnv` and `nix-direnv`, so that it is availble before you enter the Nix env.
