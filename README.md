@@ -499,6 +499,38 @@ My approach is to install the **base tools** via Nix and then let language-speci
 * **Ruby:** `Gemfile` / `Gemfile.lock`
 * ....
 
+# Direnv and Nix
+
+[direnv](https://direnv.net/) is great to get virtual environments. 
+
+I use it Direnv together with Nix like this:
+
+`.envrc` file:
+
+```bash
+# .envrc
+# shellcheck shell=bash
+
+# https://github.com/nix-community/nix-direnv
+use flake
+
+export FOO=BAR
+# ...
+```
+
+When I enter the directory with `cd`, then the Nix env gets activated.
+
+To auto-enter the nix environment (for example for coding agents - they do not evaluated `.envrc`):
+
+`some-script.sh`:
+```bash
+if [[ -z ${DIRENV_DIR:-} ]]; then
+    echo "not in direnv; re-running via direnv"
+    exec direnv exec . "$0" "$@"
+fi
+```
+
+
 ## /r/bash
 
 Thank you to [https://www.reddit.com/r/bash/](https://www.reddit.com/r/bash/)
