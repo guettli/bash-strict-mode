@@ -455,6 +455,7 @@ For **interactive** I use:
 - [CopyQ](https://hluk.github.io/CopyQ/) Clipboard Manager
 - [Activity Watch](https://activitywatch.net/) Automatic time tracker
 - VSCode
+- [vscode Direnv Extension](https://marketplace.visualstudio.com/items?itemName=mkhl.direnv)
 - Ubuntu LTS.
 
 Usually don't use `ripgrep` and `fd` in Bash scripts, because these are not available on most
