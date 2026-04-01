@@ -505,14 +505,14 @@ Should you install *everything* via Nix?
 My approach is to install the **base tools** via Nix and then let language-specific package managers
 handle the version pinning:
 
-* **Go:** `go.mod` / `go.sum`
-* **JS:** `package.json` / `package-lock.json`
-* **Ruby:** `Gemfile` / `Gemfile.lock`
-* ....
+- **Go:** `go.mod` / `go.sum`
+- **JS:** `package.json` / `package-lock.json`
+- **Ruby:** `Gemfile` / `Gemfile.lock`
+- ....
 
 More about that: [Switching to Nix](https://github.com/guettli/switching-to-nix)
 
-# Direnv and Nix
+## Direnv and Nix
 
 [direnv](https://direnv.net/) is great to get virtual environments.
 
@@ -536,6 +536,7 @@ When I enter the directory with `cd`, then the Nix env gets activated.
 To auto-enter the nix environment (for example for coding agents - they do not evaluate `.envrc`):
 
 At the top my Bash scripts:
+
 ```bash
 #!/usr/bin/env bash
 #...
