@@ -449,7 +449,7 @@ This article is about Bash scripting.
 
 For **interactive** I use:
 
-- zsh (not 100% happy, but fishell is too different)
+- zsh (not 100% happy, but fish shell is too different)
 - [Starship](https://starship.rs/) for the prompt.
 - [Atuin](https://github.com/atuinsh/atuin) for the shell history.
 - Direnv: [How I use Direnv](https://github.com/guettli/How-I-use-direnv/)
@@ -533,7 +533,7 @@ export FOO=BAR
 
 When I enter the directory with `cd`, then the Nix env gets activated.
 
-To auto-enter the nix environment (for example for coding agents - they do not evaluated `.envrc`):
+To auto-enter the nix environment (for example for coding agents - they do not evaluate `.envrc`):
 
 At the top my Bash scripts:
 ```bash
@@ -549,7 +549,7 @@ fi
 
 ```
 
-To make this work, you should install `direnv` and `nix-direnv`, so that it is availble before you
+To make this work, you should install `direnv` and `nix-direnv`, so that it is available before you
 enter the Nix env.
 
 You can do that like this:

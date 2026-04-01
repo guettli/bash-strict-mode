@@ -1,0 +1,20 @@
+# Taskfile.yaml for https://taskfile.dev/
+# Task is a modern, readable alternative to Make.
+version: "3"
+
+tasks:
+  _nix-check:
+    internal: true
+    run: once
+    preconditions:
+      - sh: test -n "${IN_NIX_SHELL:-}${DIRENV_DIR:-}"
+        msg: "Not in nix dev shell. Activate it first, for example: nix develop"
+
+  lint:
+    desc: Run lint only when files changed since the last successful run
+    deps: [_nix-check]
+    status:
+      - bash ./scripts/git-worktree-has-changed.sh lint .
+    cmds:
+      - bash ./scripts/lint.sh
+      - bash ./scripts/git-worktree-has-changed.sh --touch-stamp lint .
