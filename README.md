@@ -396,6 +396,8 @@ command-which-prints-columns | awk '{print $2}'
 
 From time to time, I use `perl` one-liners.
 
+Update: In the age of AI, I sometimes accept lines created by an AI agent which use `awk`.
+
 ## Shell vs Bash
 
 I think writing portable shell scripts is unnecessary in most cases. It is like trying to write a
@@ -476,24 +478,30 @@ This can reveal your secrets in the logs.
 Rule of thumb: Never use `set -x` in a script. Except temporarily for debugging, but do not commit
 it to the source code repo.
 
-Your text is clear and has a great personal tone, but a few tweaks to the phrasing and flow will make it sound even more professional. Here is a polished version:
-
+Your text is clear and has a great personal tone, but a few tweaks to the phrasing and flow will
+make it sound even more professional. Here is a polished version:
 
 ## Nix: Defining Dependencies with Flakes
 
-In the Python world, we have **virtual environments**. They are incredibly handy because they allow you to maintain multiple environments, each with its own custom dependencies and specific versions.
+In the Python world, we have **virtual environments**. They are incredibly handy because they allow
+you to maintain multiple environments, each with its own custom dependencies and specific versions.
 
-Almost every programming language has a similar concept, but what about **Bash scripts**? While you can manually modify your `PATH`—and for small projects, that might work—it quickly becomes difficult to manage.
+Almost every programming language has a similar concept, but what about **Bash scripts**? While you
+can manually modify your `PATH`—and for small projects, that might work—it quickly becomes difficult
+to manage.
 
-If you want a **declarative** way to define dependencies, [Nix Flakes](https://nixos.wiki/wiki/Flakes) is the best solution I’ve found.
+If you want a **declarative** way to define dependencies, [Nix
+Flakes](https://nixos.wiki/wiki/Flakes) is the best solution I’ve found.
 
-Admittedly, some parts of Nix can be difficult for newcomers to grasp. However, Large Language Models (LLMs) and your favorite search engine support you.
+Admittedly, some parts of Nix can be difficult for newcomers to grasp. However, Large Language
+Models (LLMs) and your favorite search engine support you.
 
 Personally, I think it’s time to say "goodbye" to Makefiles and scripts that manually install tools.
 
 Should you install *everything* via Nix?
 
-My approach is to install the **base tools** via Nix and then let language-specific package managers handle the version pinning:
+My approach is to install the **base tools** via Nix and then let language-specific package managers
+handle the version pinning:
 
 * **Go:** `go.mod` / `go.sum`
 * **JS:** `package.json` / `package-lock.json`
@@ -502,7 +510,7 @@ My approach is to install the **base tools** via Nix and then let language-speci
 
 # Direnv and Nix
 
-[direnv](https://direnv.net/) is great to get virtual environments. 
+[direnv](https://direnv.net/) is great to get virtual environments.
 
 I use it Direnv together with Nix like this:
 
@@ -537,16 +545,18 @@ fi
 
 ```
 
-To make this work, you should install `direnv` and `nix-direnv`, so that it is availble before you enter the Nix env.
+To make this work, you should install `direnv` and `nix-direnv`, so that it is availble before you
+enter the Nix env.
 
 You can do that like this:
 
 ```bash
-nix profile add nixpkgs#direnv nixpkgs#nix-direnv 
+nix profile add nixpkgs#direnv nixpkgs#nix-direnv
 ```
 This will install the binaries into `$HOME/.nix-profile/bin`.
 
-This way I have all I want to replace Makefiles and Docker containers which provide isolated build environments:
+This way I have all I want to replace Makefiles and Docker containers which provide isolated build
+environments:
 
 - Nix Flakes for pinning dependencies
 - Direnv to enter the "virtual environment" and set env vars
