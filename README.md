@@ -372,6 +372,8 @@ call a Bash script.
 
 A Bash script has the benefit that formatting (shfmt) and ShellCheck are available in the editor.
 
+I highly recommend to switch from Makefile to [Taskfile](https://taskfile.dev/).
+
 ## Perl Compatible Regular Expressions: `grep -P`
 
 Unfortunately there are several different flavours of regular expressions.
@@ -447,17 +449,17 @@ This article is about Bash scripting.
 
 For **interactive** I use:
 
-- [Fish Shell](https://fishshell.com/)
+- zsh (not 100% happy, but fishell is too different)
 - [Starship](https://starship.rs/) for the prompt.
 - [Atuin](https://github.com/atuinsh/atuin) for the shell history.
-- [direnv](https://direnv.net/) to set directory specific env variables.
-- [brew](https://brew.sh/)
+- Direnv: [How I use Direnv](https://github.com/guettli/How-I-use-direnv/)
+- Nix: [Switching to Nix](https://github.com/guettli/switching-to-nix)
+- VSCode
+- [vscode Direnv Extension](https://marketplace.visualstudio.com/items?itemName=mkhl.direnv)
 - [ripgrep](https://github.com/BurntSushi/ripgrep)
 - [fd find](https://github.com/sharkdp/fd)
 - [CopyQ](https://hluk.github.io/CopyQ/) Clipboard Manager
 - [Activity Watch](https://activitywatch.net/) Automatic time tracker
-- VSCode
-- [vscode Direnv Extension](https://marketplace.visualstudio.com/items?itemName=mkhl.direnv)
 - Ubuntu LTS.
 
 Usually don't use `ripgrep` and `fd` in Bash scripts, because these are not available on most
@@ -508,6 +510,8 @@ handle the version pinning:
 * **Ruby:** `Gemfile` / `Gemfile.lock`
 * ....
 
+More about that: [Switching to Nix](https://github.com/guettli/switching-to-nix)
+
 # Direnv and Nix
 
 [direnv](https://direnv.net/) is great to get virtual environments.
@@ -553,6 +557,7 @@ You can do that like this:
 ```bash
 nix profile add nixpkgs#direnv nixpkgs#nix-direnv
 ```
+
 This will install the binaries into `$HOME/.nix-profile/bin`.
 
 This way I have all I want to replace Makefiles and Docker containers which provide isolated build
@@ -563,6 +568,8 @@ environments:
 - Scripts can be executed from outside, and the env gets entered automatically.
 
 No Docker, no Makefiles .... I love it.
+
+More about that: [How I use Direnv](https://github.com/guettli/How-I-use-direnv/)
 
 ## /r/bash
 
