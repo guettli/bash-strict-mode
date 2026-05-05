@@ -183,6 +183,15 @@ echo -e "foo\nbar" | { grep '^#' >comments.txt || true; } | some-other-command
 
 With this pattern, you can easily ignore non-zero exit statuses.
 
+Or use `perl` or `sed` instead of `grep`, because they do not use a non-zero exit code if nothing was found.
+
+`my-command | grep -vP 'pattern1|pattern2'` alternatives:
+
+Perl: `my-command | perl -ne 'print unless /pattern1|pattern2/'`
+
+Sed: `my-command | sed -E '/pattern1|pattern2/d'` (but \s \w \d \b and some other [PCRE](https://en.wikipedia.org/wiki/Perl_Compatible_Regular_Expressions) syntax is not available)
+
+
 ## Bash Strict Mode: Exit Status
 
 In most cases you just want to know: Was the command successful or not?
