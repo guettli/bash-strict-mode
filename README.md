@@ -192,6 +192,14 @@ Perl: `my-command | perl -ne 'print unless /pattern1|pattern2/'`
 Sed: `my-command | sed -E '/pattern1|pattern2/d'` (but \s \w \d \b and some other [PCRE](https://en.wikipedia.org/wiki/Perl_Compatible_Regular_Expressions) syntax is not available)
 
 
+Example:
+
+> You want to ignore a deprecation warning on stderr and the non-zero exit code of `my-command`:
+
+```bash
+some_output=$(my-command 2> >(sed '/Warning:.*is deprecated/d' >&2) || true)
+```
+
 ## Bash Strict Mode: Exit Status
 
 In most cases you just want to know: Was the command successful or not?
