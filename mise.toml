@@ -3,10 +3,9 @@
 
 [tools]
 node = "26.8.1"
-task = "3.53.1"
 gitleaks = "8.30.1"
 "npm:markdownlint-cli" = "0.49.1"
-pre-commit = "4.6.2"
+prek = "0.5.2"
 shellcheck = "0.11.0"
 yamllint = "1.38.0"
 
@@ -17,3 +16,28 @@ _.file = ".env"
 # Marks that the mise env is active. Scripts use it to re-exec themselves via mise.
 # Use a project specific name, so that a var from a different project can't fool the check.
 BSM_PROJECT_ROOT = "{{config_root}}"
+
+[tasks.setup]
+description = "Install the git hooks"
+run = """
+prek prepare-hooks
+if [ -n "$(git config --get core.hooksPath)" ]; then
+    echo "core.hooksPath is set, so git ignores this repo's hooks dir. Skipping 'prek install'."
+    echo "Make sure the hook in core.hooksPath runs 'prek run --hook-stage pre-commit'."
+else
+    prek install
+fi
+"""
+
+[tasks.lint]
+description = "Run lint only when files changed since the last successful run"
+run = "bash ./scripts/lint.sh"
+sources = [
+  "**/*.md",
+  "**/*.yaml",
+  "**/*.yml",
+  "**/*.sh",
+  "!node_modules/**",
+  "!.tmp/**",
+]
+outputs = { auto = true }

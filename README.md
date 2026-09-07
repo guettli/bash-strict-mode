@@ -390,7 +390,8 @@ call a Bash script.
 
 A Bash script has the benefit that formatting (shfmt) and ShellCheck are available in the editor.
 
-I highly recommend to switch from Makefile to [Taskfile](https://taskfile.dev/).
+I highly recommend to switch from Makefile to [mise tasks](https://mise.jdx.dev/tasks/).
+See [mise: Tasks](#mise-tasks) below.
 
 ## Perl Compatible Regular Expressions: `grep -P`
 
@@ -512,9 +513,8 @@ with a single file:
 ```toml
 # mise.toml
 [tools]
-task = "3.53.1"
 gitleaks = "8.30.1"
-pre-commit = "4.6.2"
+prek = "0.5.2"
 shellcheck = "0.11.0"
 yamllint = "1.38.0"
 ```
@@ -600,16 +600,75 @@ environments:
 
 No Docker, no Makefiles .... I love it.
 
+## mise: Tasks
+
+mise is not only a tool installer. It is also a task runner, so you do not need a second tool like
+Make or Taskfile:
+
+```toml
+# mise.toml
+[tasks.setup]
+description = "Install the git hooks"
+run = "prek install --prepare-hooks"
+
+[tasks.lint]
+description = "Run lint only when files changed since the last successful run"
+run = "bash ./scripts/lint.sh"
+sources = [
+  "**/*.md",
+  "**/*.yaml",
+  "**/*.yml",
+  "**/*.sh",
+  "!node_modules/**",
+  "!.tmp/**",
+]
+outputs = { auto = true }
+```
+
+`mise tasks ls` lists the tasks with their descriptions, and `mise run lint` runs one. Tasks always
+run with the tools and env vars from `mise.toml`, and with the working directory set to the
+directory of `mise.toml`, no matter where you call them from.
+
+Keep the task short and put the real work into a Bash script. Then you get ShellCheck and shfmt in
+your editor.
+
+`sources` and `outputs` skip a task when nothing changed:
+
+```console
+$ mise run lint
+[lint] sources up-to-date, skipping
+```
+
+With `outputs = { auto = true }` mise keeps the timestamp for you, so you do not need a stamp file
+of your own. `mise run --force lint` runs the task anyway.
+
+Two things to know about `sources`:
+
+- The patterns do not respect `.gitignore`. A pattern like `**/*.md` also matches files in
+  `node_modules`, so you need to exclude those yourself with a `!` prefix.
+- mise compares modification times, not file contents. In CI, `git checkout` gives every file a
+  fresh timestamp, so the task runs again. That is the safe direction, but do not expect the cache
+  to help you there.
+
+If a task grows, you can move it to an executable file in `mise-tasks/`. mise picks up the
+description from a comment:
+
+```bash
+#!/usr/bin/env bash
+#MISE description="Run the linters"
+```
+
 ## Hacking on This Repo
 
 ```bash
 mise trust
-mise install
-task setup
+mise run setup
 ```
 
-`mise install` gets the tools pinned in `mise.toml`. `task setup` installs the
-[pre-commit](https://pre-commit.com/) hooks. Then `task lint` runs the linters.
+`mise run` installs the tools pinned in `mise.toml` if they are missing, and `setup` installs the
+git hooks with [prek](https://github.com/j178/prek), a faster replacement for
+[pre-commit](https://pre-commit.com/). The hooks are configured in `prek.toml`. Then
+`mise run lint` runs the linters.
 
 ## /r/bash
 
@@ -620,5 +679,5 @@ I got several good hints there.
 ## More
 
 - [mise](https://mise.jdx.dev/)
-- [Taskfile is great](https://github.com/guettli/taskfile-is-great)
+- [mise tasks](https://mise.jdx.dev/tasks/)
 - [Thomas WOL: Working out Loud](https://github.com/guettli/wol)
