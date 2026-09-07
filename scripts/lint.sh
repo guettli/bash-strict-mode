@@ -3,17 +3,22 @@
 trap 'echo -e "\n🤷 🚨 🔥 Warning: A command has failed. Exiting the script. Line was ($0:$LINENO): $(sed -n "${LINENO}p" "$0" 2>/dev/null || true) 🔥 🚨 🤷 "; exit 3' ERR
 set -Eeuo pipefail
 
+if [[ -z ${BSM_PROJECT_ROOT:-} ]]; then
+    if [[ -n ${BSM_MISE_RETRY:-} ]]; then
+        echo "mise env still not active. Did you run 'mise trust' in this repo?" >&2
+        exit 1
+    fi
+    echo "mise env not active; re-running via mise"
+    export BSM_MISE_RETRY=1
+    exec mise -C "$(dirname -- "$(readlink -f -- "$0")")/.." exec -- "$0" "$@"
+fi
+
 if [[ "${1:-}" == "--help" ]] || [[ "${1:-}" == "-h" ]]; then
     echo "Usage: ./internal/lint.sh"
     echo ""
     echo "Run lint checks for tracked Markdown, YAML, and shell files."
-    echo "Requires a nix dev shell."
+    echo "Requires the tools from mise.toml."
     exit 0
-fi
-
-if [[ -z ${IN_NIX_SHELL:-} && -z ${DIRENV_DIR:-} ]]; then
-    echo "Not in nix dev shell. Activate it first, for example: nix develop"
-    exit 1
 fi
 
 mapfile -d '' markdown_files < <(git ls-files -z -- '*.md')

@@ -1,0 +1,19 @@
+# Config for mise: https://mise.jdx.dev/
+# Run `mise install` to get the tools listed below.
+
+[tools]
+node = "26.8.1"
+task = "3.53.1"
+gitleaks = "8.30.1"
+"npm:markdownlint-cli" = "0.49.1"
+pre-commit = "4.6.2"
+shellcheck = "0.11.0"
+yamllint = "1.38.0"
+
+[env]
+_.path = ["{{config_root}}/scripts", "{{config_root}}/node_modules/.bin"]
+_.file = ".env"
+
+# Marks that the mise env is active. Scripts use it to re-exec themselves via mise.
+# Use a project specific name, so that a var from a different project can't fool the check.
+BSM_PROJECT_ROOT = "{{config_root}}"

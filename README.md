@@ -183,14 +183,15 @@ echo -e "foo\nbar" | { grep '^#' >comments.txt || true; } | some-other-command
 
 With this pattern, you can easily ignore non-zero exit statuses.
 
-Or use `perl` or `sed` instead of `grep`, because they do not use a non-zero exit code if nothing was found.
+Or use `perl` or `sed` instead of `grep`, because they do not use a non-zero exit code if
+nothing was found.
 
 `my-command | grep -vP 'pattern1|pattern2'` alternatives:
 
 Perl: `my-command | perl -ne 'print unless /pattern1|pattern2/'`
 
-Sed: `my-command | sed -E '/pattern1|pattern2/d'` (but \s \w \d \b and some other [PCRE](https://en.wikipedia.org/wiki/Perl_Compatible_Regular_Expressions) syntax is not available)
-
+Sed: `my-command | sed -E '/pattern1|pattern2/d'` (but `\s` `\w` `\d` `\b` and some other
+[PCRE](https://en.wikipedia.org/wiki/Perl_Compatible_Regular_Expressions) syntax is not available)
 
 Example:
 
@@ -469,10 +470,9 @@ For **interactive** I use:
 - zsh (not 100% happy, but fish shell is too different)
 - [Starship](https://starship.rs/) for the prompt.
 - [Atuin](https://github.com/atuinsh/atuin) for the shell history.
-- Direnv: [How I use Direnv](https://github.com/guettli/How-I-use-direnv/)
-- Nix: [Switching to Nix](https://github.com/guettli/switching-to-nix)
+- [mise](https://mise.jdx.dev/) to install and pin the tools a project needs
 - VSCode
-- [vscode Direnv Extension](https://marketplace.visualstudio.com/items?itemName=mkhl.direnv)
+- [vscode mise Extension](https://marketplace.visualstudio.com/items?itemName=hverlin.mise-vscode)
 - [ripgrep](https://github.com/BurntSushi/ripgrep)
 - [fd find](https://github.com/sharkdp/fd)
 - [CopyQ](https://hluk.github.io/CopyQ/) Clipboard Manager
@@ -497,10 +497,7 @@ This can reveal your secrets in the logs.
 Rule of thumb: Never use `set -x` in a script. Except temporarily for debugging, but do not commit
 it to the source code repo.
 
-Your text is clear and has a great personal tone, but a few tweaks to the phrasing and flow will
-make it sound even more professional. Here is a polished version:
-
-## Nix: Defining Dependencies with Flakes
+## mise: Defining Dependencies
 
 In the Python world, we have **virtual environments**. They are incredibly handy because they allow
 you to maintain multiple environments, each with its own custom dependencies and specific versions.
@@ -509,17 +506,27 @@ Almost every programming language has a similar concept, but what about **Bash s
 can manually modify your `PATH`—and for small projects, that might work—it quickly becomes difficult
 to manage.
 
-If you want a **declarative** way to define dependencies, [Nix
-Flakes](https://nixos.wiki/wiki/Flakes) is the best solution I’ve found.
+If you want a **declarative** way to define dependencies, [mise](https://mise.jdx.dev/) does the job
+with a single file:
 
-Admittedly, some parts of Nix can be difficult for newcomers to grasp. However, Large Language
-Models (LLMs) and your favorite search engine support you.
+```toml
+# mise.toml
+[tools]
+task = "3.53.1"
+gitleaks = "8.30.1"
+pre-commit = "4.6.2"
+shellcheck = "0.11.0"
+yamllint = "1.38.0"
+```
 
-Personally, I think it’s time to say "goodbye" to Makefiles and scripts that manually install tools.
+`mise install` downloads the pinned versions, and `mise` puts them on your `PATH` when you are in
+the directory. No system-wide installs, no "works on my machine".
 
-Should you install *everything* via Nix?
+Personally, I think it's time to say "goodbye" to Makefiles and scripts that manually install tools.
 
-My approach is to install the **base tools** via Nix and then let language-specific package managers
+Should you install *everything* via mise?
+
+My approach is to install the **base tools** via mise and then let language-specific package managers
 handle the version pinning:
 
 - **Go:** `go.mod` / `go.sum`
@@ -527,67 +534,82 @@ handle the version pinning:
 - **Ruby:** `Gemfile` / `Gemfile.lock`
 - ....
 
-More about that: [Switching to Nix](https://github.com/guettli/switching-to-nix)
+## Env Vars and Auto-Activation
 
-## Direnv and Nix
+mise does more than install tools. It also sets env vars and extends `PATH`:
 
-[direnv](https://direnv.net/) is great to get virtual environments.
+```toml
+# mise.toml
+[env]
+FOO = "BAR"
 
-I use it Direnv together with Nix like this:
+# Put ./scripts on PATH:
+_.path = ["{{config_root}}/scripts"]
 
-`.envrc` file:
+# Read more vars from .env, if that file exists:
+_.file = ".env"
 
-```bash
-# .envrc
-# shellcheck shell=bash
-
-# https://github.com/nix-community/nix-direnv
-use flake
-
-export FOO=BAR
-# ...
+# Handy as a marker that the env is active (see below). Pick a project specific
+# name, so that a var from a different project can't fool the check:
+MY_PROJECT_ROOT = "{{config_root}}"
 ```
 
-When I enter the directory with `cd`, then the Nix env gets activated.
+If you run `mise activate` in your shell rc file, all of this gets applied when you `cd` into the
+directory, and removed when you leave. That is the "virtual environment" I want, without a second
+tool like direnv.
 
-To auto-enter the nix environment (for example for coding agents - they do not evaluate `.envrc`):
-
-At the top my Bash scripts:
+Scripts are a different story: they do not read your shell rc file, and neither do coding agents.
+So let the script enter the env itself. Put this at the top:
 
 ```bash
 #!/usr/bin/env bash
 #...
 
-if [[ -z ${DIRENV_DIR:-} ]]; then
-    echo "not in direnv; re-running via direnv"
-    exec direnv exec . "$0" "$@"
+if [[ -z ${MY_PROJECT_ROOT:-} ]]; then
+    if [[ -n ${MY_MISE_RETRY:-} ]]; then
+        echo "mise env still not active. Did you run 'mise trust'?" >&2
+        exit 1
+    fi
+    echo "mise env not active; re-running via mise"
+    export MY_MISE_RETRY=1
+    exec mise -C "$(dirname -- "$(readlink -f -- "$0")")/.." exec -- "$0" "$@"
 fi
 
 # ...
 
 ```
 
-To make this work, you should install `direnv` and `nix-direnv`, so that it is available before you
-enter the Nix env.
+`mise exec` runs the command with the tools and env vars from `mise.toml`, so the script works the
+same whether you call it from an activated shell, from a plain shell, or from CI.
 
-You can do that like this:
+Two details are easy to get wrong:
 
-```bash
-nix profile add nixpkgs#direnv nixpkgs#nix-direnv
-```
+- `mise exec` looks for `mise.toml` in the **current** directory, not next to the script. Without
+  `-C`, calling the script from somewhere else finds no config, the marker var stays empty, and the
+  script re-execs itself forever. That is what the `MY_MISE_RETRY` guard is for.
+- mise refuses to read a config it does not trust yet. Run `mise trust` once per clone.
 
-This will install the binaries into `$HOME/.nix-profile/bin`.
+To make this work, you need `mise` installed. See
+[Getting started with mise](https://mise.jdx.dev/getting-started.html).
 
 This way I have all I want to replace Makefiles and Docker containers which provide isolated build
 environments:
 
-- Nix Flakes for pinning dependencies
-- Direnv to enter the "virtual environment" and set env vars
+- mise to pin dependencies and set env vars
 - Scripts can be executed from outside, and the env gets entered automatically.
 
 No Docker, no Makefiles .... I love it.
 
-More about that: [How I use Direnv](https://github.com/guettli/How-I-use-direnv/)
+## Hacking on This Repo
+
+```bash
+mise trust
+mise install
+task setup
+```
+
+`mise install` gets the tools pinned in `mise.toml`. `task setup` installs the
+[pre-commit](https://pre-commit.com/) hooks. Then `task lint` runs the linters.
 
 ## /r/bash
 
@@ -597,7 +619,6 @@ I got several good hints there.
 
 ## More
 
-- [How I use Direnv](https://github.com/guettli/How-I-use-direnv/)
-- [Switching to Nix](https://github.com/guettli/switching-to-nix)
+- [mise](https://mise.jdx.dev/)
 - [Taskfile is great](https://github.com/guettli/taskfile-is-great)
 - [Thomas WOL: Working out Loud](https://github.com/guettli/wol)

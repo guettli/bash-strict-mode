@@ -3,16 +3,15 @@
 version: "3"
 
 tasks:
-  _nix-check:
-    internal: true
-    run: once
-    preconditions:
-      - sh: test -n "${IN_NIX_SHELL:-}${DIRENV_DIR:-}"
-        msg: "Not in nix dev shell. Activate it first, for example: nix develop"
+  setup:
+    desc: Install the tools from mise.toml and the pre-commit hooks
+    cmds:
+      - mise trust
+      - mise install
+      - mise exec -- pre-commit install --install-hooks
 
   lint:
     desc: Run lint only when files changed since the last successful run
-    deps: [_nix-check]
     status:
       - bash ./scripts/git-worktree-has-changed.sh lint .
     cmds:
