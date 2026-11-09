@@ -294,6 +294,9 @@ requirements is such a task. Bash fits perfectly for that.
 Bash is not a real programming language. For applications, it’s better to use Golang or Python (in
 my opinion).
 
+For example, it might be better to use Ansible with the [k8s_module](https://docs.ansible.com/projects/ansible/latest/collections/kubernetes/core/k8s_module.html),
+if you call `kubectl` again and again in your Bash scripts.
+
 ## General Bash Hints: Avoid `find ... | while read -r file` — Use `while read -r file; do ...; done < <(find ...)`
 
 Imagine you want to collect errors like this, and fail after the loop if the string error is not
