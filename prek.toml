@@ -18,11 +18,17 @@ hooks = [
   { id = "trailing-whitespace" }
 ]
 
+# Block commits that contain secrets. betterleaks is pinned in mise.toml.
 [[repos]]
-repo = "https://github.com/betterleaks/betterleaks"
-rev = "v1.10.1"
+repo = "local"
 hooks = [
-  { id = "betterleaks" }
+  {
+    id = "betterleaks",
+    name = "betterleaks (secrets)",
+    entry = "mise exec betterleaks -- betterleaks git --pre-commit --staged --redact --verbose",
+    language = "system",
+    pass_filenames = false
+  }
 ]
 
 [[repos]]
