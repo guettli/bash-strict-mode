@@ -3,7 +3,7 @@
 
 [tools]
 node = "26.8.1"
-gitleaks = "8.30.1"
+betterleaks = "1.10.1"
 "npm:markdownlint-cli" = "0.49.1"
 prek = "0.5.2"
 shellcheck = "0.11.0"

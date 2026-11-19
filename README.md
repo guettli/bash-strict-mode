@@ -516,7 +516,7 @@ with a single file:
 ```toml
 # mise.toml
 [tools]
-gitleaks = "8.30.1"
+betterleaks = "1.10.1"
 prek = "0.5.2"
 shellcheck = "0.11.0"
 yamllint = "1.38.0"
